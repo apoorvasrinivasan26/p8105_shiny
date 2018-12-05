@@ -25,6 +25,7 @@ library(shiny)
 library(rsconnect)
 
 load('data/finaldat.RData')
+load('data/incident_zip_coor.RData') 
 
 finaldat = finaldat %>%
   mutate(season = 
@@ -61,6 +62,13 @@ zip_coor =
 finaldat_8min_zip_coor = merge(finaldat_8min, zip_coor) %>%
   separate(borough_desc, into = c("remove", "borough"), sep = "-") %>%
   select(-c(remove))
+
+ny = map_data("county", "new york")
+
+ny_1 = 
+ ny %>% 
+ filter(subregion %in% c("kings", "bronx", "richmond", "new york", "queens"))
+
 
 
 ```
@@ -123,4 +131,17 @@ renderPlotly({
 
 
 
+```{r}
+#renderPlotly({ 
+ # finaldat_8min_zip_coor %>%
+#    filter(borough == input$borough_choice, season == input$season_choice) %>%
+#    group_by(zip_code) %>%
+ #   mutate(response_time = as.numeric(response_time)) %>%
+ # mutate(mean_res_time = mean(response_time)) %>% 
+ #   ggplot() + 
+# geom_polygon(data = ny_1, aes(x = long, y = lat, group = group, fill = subregion)) +
+# geom_point(data = incident_zip_coor, aes(x = long, y = lat, color = mean_res_time)) +
+#viridis::scale_color_viridis()
+# })
+```
 
